@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-"""Problem Sheet 2.
+from helpers import *
 
-Stochastic Gradient Descent
-"""
-from helpers import batch_iter
-from costs import compute_loss
 
 
 def compute_stoch_gradient(y, tx, w):

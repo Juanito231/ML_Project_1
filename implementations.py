@@ -77,7 +77,11 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
-    raise NotImplementedError
+    w = initial_w
+    for n_iter in range(max_iters):
+        w = w - gamma * calculate_gradient_logistic(y, tx, w)
+    loss = calculate_loss_logistic(y, tx, w)
+    return w, loss
     
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """Regularized logistic regression using GD or SGD (y in {0,1},
@@ -90,4 +94,8 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
-    raise NotImplementedError
+    w = initial_w
+    for n_iter in range(max_iters):
+        w = w - gamma * penalized_logistic_gradient(y, tx, w, lambda_)
+    loss = penalized_logistic_loss(y, tx, w, lambda_)
+    return w, loss

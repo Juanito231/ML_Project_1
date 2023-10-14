@@ -15,7 +15,10 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
-    raise NotImplementedError
+    weights, losses = gradient_descent(y, tx, initial_w, max_iters, gamma)
+    w = weights[-1]
+    loss = losses[-1]
+    return w, loss
     
 
 def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
@@ -28,7 +31,10 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
-    raise NotImplementedError
+    weights, losses = stochastic_gradient_descent(y, tx, initial_w, max_iters, gamma)
+    w = weights[-1]
+    loss = losses[-1]
+    return w, loss
 
 
 def least_squares(y, tx):
@@ -39,9 +45,11 @@ def least_squares(y, tx):
         tx: numpy array of shape=(N,2)
     """
     #solve linear system with np.linalg.solve
-    w = np.linalg.solve(tx.T @ tx, tx.T @ y)
-    mse = compute_loss(y, tx, w)
-    return w, mse
+    A = tx.T.dot(tx)
+    b = tx.T.dot(y)
+    w = np.linalg.solve(A, b)
+    loss = compute_loss(y,tx,w)
+    return w, loss
 
 
 def ridge_regression(y, tx, lambda_):
@@ -52,11 +60,12 @@ def ridge_regression(y, tx, lambda_):
         tx: numpy array of shape=(N,2)
         lambda_: regularization parameter
     """
-    coeff = lambda_*2*len(y) # lambda'
-    # N = len(y), D = len(tx[0])
-    w = np.linalg.solve(tx.T @ tx + coeff * np.eye(len(tx[0])), tx.T @ y)
-    mse = compute_loss(y, tx, w)
-    return w, mse
+    aI = 2 * tx.shape[0] * lambda_ * np.identity(tx.shape[1])
+    a = tx.T.dot(tx) + aI
+    b = tx.T.dot(y)
+    w = np.linalg.solve(a, b)
+    loss = compute_loss(y,tx,w)
+    return w, loss
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """Logistic regression using GD or SGD (y in {0,1})

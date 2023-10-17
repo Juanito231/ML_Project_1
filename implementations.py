@@ -67,8 +67,8 @@ def ridge_regression(y, tx, lambda_):
     loss = compute_loss(y,tx,w)
     return w, loss
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    """Logistic regression using GD or SGD (y in {0,1})
+def logistic_regression_GD(y, tx, initial_w, max_iters, gamma):
+    """Logistic regression using GD (y in {0,1})
 
     Args:
         y: 
@@ -77,14 +77,29 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
-    w = initial_w
-    for n_iter in range(max_iters):
-        w = w - gamma * calculate_gradient_logistic(y, tx, w)
-    loss = calculate_loss_logistic(y, tx, w)
+    weights, losses = GD_logistic(y, tx, initial_w, max_iters, gamma)
+    w = weights[-1]
+    loss = losses[-1]
     return w, loss
-    
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    """Regularized logistic regression using GD or SGD (y in {0,1},
+   
+def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma):
+    """Logistic regression using SGD (y in {0,1})
+
+    Args:
+        y: 
+        tx: numpy array of shape=(N,2)
+        initial_w: numpy array of shape=(2, ). Initial guess for our model
+        max_iters: scalar denoting the total number of iterations of GD
+        gamma: a scalar denoting the stepsize
+        batch_size: a scalar denoting the number of data points in a mini-batch used for computing the stochastic gradient
+    """
+    weights, losses = SGD_logistic(y, tx, initial_w, batch_size, max_iters, gamma)
+    w = weights[-1]
+    loss = losses[-1]
+    return w, loss
+
+def Regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambda_):
+    """Regularized logistic regression using GD (y in {0,1},
     regularization term lambda*||w||^2)
 
     Args:
@@ -93,9 +108,27 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         initial_w: numpy array of shape=(2, ). Initial guess for our model
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
+        lambda_: regularization parameter
     """
-    w = initial_w
-    for n_iter in range(max_iters):
-        w = w - gamma * penalized_logistic_gradient(y, tx, w, lambda_)
-    loss = penalized_logistic_loss(y, tx, w, lambda_)
+    weights, losses = Regularized_GD_logistic(y, tx, initial_w, max_iters, gamma, lambda_)
+    w = weights[-1]
+    loss = losses[-1]
+    return w, loss
+
+def Regularized_logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, lambda_):
+    """Regularized logistic regression using SGD (y in {0,1},
+    regularization term lambda*||w||^2)
+
+    Args:
+        y: 
+        tx: numpy array of shape=(N,2)
+        initial_w: numpy array of shape=(2, ). Initial guess for our model
+        batch_size: a scalar denoting the number of data points in a mini-batch used for computing the stochastic gradient
+        max_iters: scalar denoting the total number of iterations of GD
+        gamma: a scalar denoting the stepsize
+        lambda_: regularization parameter
+    """
+    weights, losses = Regularized_SGD_logistic(y, tx, initial_w, batch_size, max_iters, gamma, lambda_)
+    w = weights[-1]
+    loss = losses[-1]
     return w, loss

@@ -5,7 +5,7 @@ def calculate_mse(e):
     return 1/2*np.mean(e**2)
 
 def compute_loss(y, tx, w):
-    """Calculate the loss using mse"""
+    """Calculate the loss using mse."""
     e = y - tx.dot(w)
     return calculate_mse(e)
 
@@ -87,7 +87,7 @@ def gradient_descent(y, tx, initial_w, max_iters, gamma):
     return losses, ws
 
 def stochastic_gradient_descent(y, tx, initial_w, batch_size, max_iters, gamma):
-    """The Stochastic Gradient Descent algorithm (SGD).
+    """The Stochastic Gradient (SGD) Descent algorithm.
 
     Args:
         y: shape=(N, )
@@ -137,7 +137,7 @@ def compute_loss_logistic(y, tx, w):
     return -(1/len(y)) * np.squeeze(- loss)
 
 def GD_logistic(y, tx, initial_w, max_iters, gamma):
-    """The Gradient Descent (GD) algorithm.
+    """The logistic Gradient Descent (GD) algorithm.
 
     Args:
         y: shape=(N, )
@@ -157,7 +157,7 @@ def GD_logistic(y, tx, initial_w, max_iters, gamma):
     for n_iter in range(max_iters):
         # compute loss, gradient
         grad, err = compute_gradient_logistic(y, tx, w)
-        loss = calculate_loss_logistic(y, tx , w)
+        loss = compute_loss_logistic(y, tx , w)
         # update w by gradient descent
         w = w - gamma * grad
         # store w and loss
@@ -169,7 +169,7 @@ def GD_logistic(y, tx, initial_w, max_iters, gamma):
     return losses, ws
 
 def SGD_logistic(y, tx, initial_w, batch_size, max_iters, gamma):
-    """The Stochastic Gradient Descent algorithm (SGD).
+    """The logistic Stochastic Gradient Descent algorithm (SGD).
 
     Args:
         y: shape=(N, )
@@ -207,11 +207,11 @@ def SGD_logistic(y, tx, initial_w, batch_size, max_iters, gamma):
 
 
 def Regularized_logistic_loss(y, tx, w, lambda_):
-    loss = calculate_loss_logistic(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
+    loss = compute_loss_logistic(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
     return loss
 
 def Regularized_logistic_gradient(y, tx, w, lambda_):
-    grad = calculate_gradient_logistic(y, tx, w) + 2 * lambda_ * w
+    grad = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
     return grad
 
 def Regularized_GD_logistic(y, tx, initial_w, max_iters, gamma, lambda_):

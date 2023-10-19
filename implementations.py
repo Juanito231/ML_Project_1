@@ -5,6 +5,8 @@ import numpy as np
 # all functions should return: (w, loss), which is the last weight vector of the
 #method, and the corresponding loss value (cost function).
 
+# change so we don't keep all weights and losses in memory (bc big dataset)
+
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """Linear regression using gradient descent
 
@@ -98,7 +100,7 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma):
     loss = losses[-1]
     return w, loss
 
-def Regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambda_):
+def regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambda_):
     """Regularized logistic regression using GD (y in {0,1},
     regularization term lambda*||w||^2)
 
@@ -115,7 +117,7 @@ def Regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambd
     loss = losses[-1]
     return w, loss
 
-def Regularized_logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, lambda_):
+def regularized_logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, lambda_):
     """Regularized logistic regression using SGD (y in {0,1},
     regularization term lambda*||w||^2)
 

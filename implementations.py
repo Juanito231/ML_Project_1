@@ -5,7 +5,7 @@ import numpy as np
 # all functions should return: (w, loss), which is the last weight vector of the
 #method, and the corresponding loss value (cost function).
 
-def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
+def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma): #checked
     """Linear regression using gradient descent
 
     Args:
@@ -23,16 +23,16 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         # update w by gradient descent
         w = w - gamma * grad
     """#if we want the details of the convergence
-        loss = calculate_mse(err)
+        loss = compute_loss_mse(y, tx, w)
         print("Gradient Descent({bi}/{ti}): loss={l}".format(
             bi=n_iter, ti=max_iters - 1, l=loss))
     """
     # compute the final loss
-    loss = calculate_mse(err)
+    loss = compute_loss_mse(y, tx, w)
     return w, loss
     
 
-def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
+def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma): #checked
     """Linear regression using stochastic gradient descent
 
     Args:
@@ -52,14 +52,14 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
             w = w - gamma * grad
         """ if we want the details of the convergence, uncomment this part
         print("SGD({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
-              bi=n_iter, ti=max_iters - 1, l= compute_loss(y, tx, w), w0=w[0], w1=w[1]))
+              bi=n_iter, ti=max_iters - 1, l= compute_loss_mse(y, tx, w), w0=w[0], w1=w[1]))
         """
     # compute the final loss
-    loss = compute_loss(y, tx, w)
+    loss = compute_loss_mse(y, tx, w)
     return w, loss
 
 
-def least_squares(y, tx):
+def least_squares(y, tx):#checked
     """Least squares regression using normal equations
 
     Args:
@@ -70,11 +70,11 @@ def least_squares(y, tx):
     A = tx.T.dot(tx)
     b = tx.T.dot(y)
     w = np.linalg.solve(A, b)
-    loss = compute_loss(y,tx,w)
+    loss = compute_loss_mse(y,tx,w)
     return w, loss
 
 
-def ridge_regression(y, tx, lambda_):
+def ridge_regression(y, tx, lambda_): #checked
     """Ridge regression using normal equations
 
     Args:
@@ -86,7 +86,7 @@ def ridge_regression(y, tx, lambda_):
     A = tx.T.dot(tx) + aI
     b = tx.T.dot(y)
     w = np.linalg.solve(A, b)
-    loss = compute_loss(y,tx,w)
+    loss = compute_loss_mse(y,tx,w)
     return w, loss
 
 def logistic_regression_GD(y, tx, initial_w, max_iters, gamma):
@@ -142,7 +142,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     loss = compute_loss_logistic(y, tx, w)
     return w, loss
 
-def regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambda_):
+def reg_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambda_):
     """Regularized logistic regression using GD (y in {0,1},
     regularization term lambda*||w||^2)
 
@@ -157,12 +157,12 @@ def regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambd
     w = initial_w
     for n_iter in range(max_iters):
         # compute gradient
-        grad, err = regularized_logistic_gradient(y, tx, w, lambda_)
+        grad, _ = regularized_logistic_gradient(y, tx, w, lambda_)
         # update w by gradient descent
         w = w - gamma * grad
         # store w and loss
     """print details
-        loss = Regularized_logistic_loss(y, tx , w, lambda_)
+        loss = regularized_logistic_loss(y, tx , w, lambda_)
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
     """
@@ -170,7 +170,7 @@ def regularized_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambd
     loss = regularized_logistic_loss(y, tx, w, lambda_)
     return w, loss
 
-def regularized_logistic_regression_SGD(y, tx, initial_w, max_iters, gamma, lambda_):
+def reg_logistic_regression_SGD(y, tx, initial_w, max_iters, gamma, lambda_):
     """Regularized logistic regression using SGD (y in {0,1},
     regularization term lambda*||w||^2)
 
@@ -193,7 +193,7 @@ def regularized_logistic_regression_SGD(y, tx, initial_w, max_iters, gamma, lamb
             w = w - gamma * grad    
         """print details
         # calculate loss
-        loss = Regularized_logistic_loss(y, tx, w)
+        loss = regularized_logistic_loss(y, tx, w)
         print("SGD({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
         """        

@@ -1,13 +1,10 @@
 import numpy as np
 
-def calculate_mse(e):
-    """Calculate the mse for vector e."""
-    return 1/2*np.mean(e**2)
-
-def compute_loss(y, tx, w):
+def compute_loss_mse(y, tx, w): #checked
     """Calculate the loss using mse."""
-    e = y - tx.dot(w)
-    return calculate_mse(e)
+    e = y - tx @ w
+    N = len(y)
+    return  (e @ e.T/(2*N))
 
 def sigmoid_function(z):
     """Apply sigmoid function on t."""
@@ -42,7 +39,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
-def compute_gradient(y, tx, w):
+def compute_gradient(y, tx, w): #checked with gd
     """Computes the gradient at w.
 
     Args:
@@ -63,12 +60,12 @@ def compute_gradient_logistic(y, tx, w):
     grad = (1/len(y))* tx.T.dot(pred - y)
     return grad
 
-def compute_loss_logistic(y, tx, w):
+def compute_loss_logistic(y, tx, w): #checked
     """compute the cost by negative log likelihood."""
     pred = sigmoid_function(tx.dot(w))
     # We know that P(y=0|x) = 1 - P(y=1|x)
     loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
-    return -(1/len(y)) * np.squeeze(- loss)
+    return -(1/len(y)) * np.squeeze(loss)
 
 def regularized_logistic_loss(y, tx, w, lambda_):
     loss = compute_loss_logistic(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))

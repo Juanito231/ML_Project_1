@@ -25,14 +25,17 @@ def load_csv_data(data_path, sub_sample=False):
         delimiter=",",
         skip_header=1,
         dtype=int,
-        usecols=1,
+        usecols=0,
     )
+    print("y_train loaded")
     x_train = np.genfromtxt(
         os.path.join(data_path, "x_train.csv"), delimiter=",", skip_header=1
     )
+    print("x_train loaded")
     x_test = np.genfromtxt(
         os.path.join(data_path, "x_test.csv"), delimiter=",", skip_header=1
     )
+    print("x_test loaded")
 
     train_ids = x_train[:, 0].astype(dtype=int)
     test_ids = x_test[:, 0].astype(dtype=int)

@@ -13,6 +13,10 @@ def sigmoid_function(z):
     """Apply sigmoid function on t."""
     return 1 / (1 + np.exp(-z))
 
+def convert_predict(y):
+    """ convert prediction to 0 and 1 with sigmoid"""
+    return np.round(sigmoid_function(y))
+
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
     Generate a minibatch iterator for a dataset.
@@ -43,11 +47,11 @@ def compute_gradient(y, tx, w):
 
     Args:
         y: shape=(N, )
-        tx: shape=(N,2)
-        w: shape=(2, ). The vector of model parameters.
+        tx: shape=(N,D)
+        w: shape=(D, ). The vector of model parameters.
 
     Returns:
-        An array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
+        An array of shape (D, ) (same shape as w), containing the gradient of the loss at w.
     """
     err = y - tx.dot(w)
     grad = -tx.T.dot(err) / len(err)

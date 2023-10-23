@@ -83,3 +83,9 @@ def regularized_logistic_loss(y, tx, w, lambda_):#checked,
 def regularized_logistic_gradient(y, tx, w, lambda_):
     grad = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
     return grad
+
+def convert_minus1_to_0(y):
+    return (y+1)/2 # -1 -> 0, 1 stays 1
+
+def convert_0_to_minus1(y):
+    return 2*y - 1

@@ -25,7 +25,7 @@ def load_csv_data(data_path, sub_sample=False):
         delimiter=",",
         skip_header=1,
         dtype=int,
-        usecols=0,
+        usecols=1,
     )
     print("y_train loaded")
     x_train = np.genfromtxt(

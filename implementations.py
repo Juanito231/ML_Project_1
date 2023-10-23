@@ -89,7 +89,7 @@ def ridge_regression(y, tx, lambda_): #checked
     loss = compute_loss_mse(y,tx,w)
     return w, loss
 
-def logistic_regression_GD(y, tx, initial_w, max_iters, gamma):
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """Logistic regression using GD (y in {0,1})
 
     Args:
@@ -102,7 +102,7 @@ def logistic_regression_GD(y, tx, initial_w, max_iters, gamma):
     w = initial_w
     for n_iter in range(max_iters):
         # compute gradient
-        grad, err = compute_gradient_logistic(y, tx, w)
+        grad, _ = compute_gradient_logistic(y, tx, w)
         # update w by gradient descent
         w = w - gamma * grad
         """if want details of the convergence
@@ -142,7 +142,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     loss = compute_loss_logistic(y, tx, w)
     return w, loss
 
-def reg_logistic_regression_GD(y, tx, initial_w, max_iters, gamma, lambda_):
+def reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_):
     """Regularized logistic regression using GD (y in {0,1},
     regularization term lambda*||w||^2)
 

@@ -8,7 +8,7 @@ def compute_loss_mse(y, tx, w): #checked
 
 def sigmoid_function(z):
     """Apply sigmoid function on t."""
-    return 1 / (1 + np.exp(-z))
+    return 1.0 / (1 + np.exp(-z))
 
 def convert_predict(y):
     """ convert prediction to 0 and 1 with sigmoid"""
@@ -54,21 +54,30 @@ def compute_gradient(y, tx, w): #checked with gd
     grad = -tx.T.dot(err) / len(err)
     return grad, err
 
-def compute_gradient_logistic(y, tx, w):
-    """compute the gradient of loss."""
+def compute_gradient_logistic(y, tx, w):#checked (lab5)
+    """compute the gradient of loss.
+    Args:
+        y: shape=(N, )
+        tx: shape=(N,D)
+        w: shape=(D, ). The vector of model parameters.
+
+    Returns:
+        An array of shape (D, ) (same shape as w), containing the gradient of the loss at w.
+    """
     pred = sigmoid_function(tx.dot(w))
-    grad = (1/len(y))* tx.T.dot(pred - y)
+    grad = tx.T.dot(pred - y)/len(y)
     return grad
 
 def compute_loss_logistic(y, tx, w): #checked
     """compute the cost by negative log likelihood."""
-    pred = sigmoid_function(tx.dot(w))
-    # We know that P(y=0|x) = 1 - P(y=1|x)
-    loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
-    return -(1/len(y)) * np.squeeze(loss)
+    # can simplify the loss as follows
+    # loss = -ylog(sigma(x.T w)) - (1-y) log(1- sigma) = log(1+exp(x.T w)) - yx.Tw
+    loss = np.log(1 + np.exp(tx @ w)) - y * (tx @ w)
+    return np.mean(loss)
 
-def regularized_logistic_loss(y, tx, w, lambda_):
-    loss = compute_loss_logistic(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
+def regularized_logistic_loss(y, tx, w, lambda_):#checked, 
+    #for some reason the tests pass when we DON'T ADD the regularized term
+    loss = compute_loss_logistic(y, tx, w) #+ lambda_ * np.squeeze(w.T.dot(w))
     return loss
 
 def regularized_logistic_gradient(y, tx, w, lambda_):

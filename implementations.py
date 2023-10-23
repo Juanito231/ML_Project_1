@@ -89,7 +89,7 @@ def ridge_regression(y, tx, lambda_): #checked
     loss = compute_loss_mse(y,tx,w)
     return w, loss
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):
+def logistic_regression(y, tx, initial_w, max_iters, gamma):#checked
     """Logistic regression using GD (y in {0,1})
 
     Args:
@@ -102,14 +102,15 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     w = initial_w
     for n_iter in range(max_iters):
         # compute gradient
-        grad, _ = compute_gradient_logistic(y, tx, w)
+        grad = compute_gradient_logistic(y, tx, w)
         # update w by gradient descent
         w = w - gamma * grad
-        """if want details of the convergence
+        """#if want details of the convergence
         loss = compute_loss_logistic(y, tx , w)
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
-        """
+              """
+        
     #compute final loss
     loss = compute_loss_logistic(y, tx, w)
     return w, loss
@@ -130,7 +131,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute a stochastic gradient and loss
-            grad, _ = compute_gradient_logistic(y_batch, tx_batch, w)
+            grad = compute_gradient_logistic(y_batch, tx_batch, w)
             # update w through the stochastic gradient update
             w = w - gamma * grad
         """    
@@ -142,7 +143,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     loss = compute_loss_logistic(y, tx, w)
     return w, loss
 
-def reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma ):#checked
     """Regularized logistic regression using GD (y in {0,1},
     regularization term lambda*||w||^2)
 
@@ -157,11 +158,11 @@ def reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_):
     w = initial_w
     for n_iter in range(max_iters):
         # compute gradient
-        grad, _ = regularized_logistic_gradient(y, tx, w, lambda_)
+        grad = regularized_logistic_gradient(y, tx, w, lambda_)
         # update w by gradient descent
         w = w - gamma * grad
         # store w and loss
-    """print details
+        """#print details
         loss = regularized_logistic_loss(y, tx , w, lambda_)
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
@@ -170,7 +171,7 @@ def reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_):
     loss = regularized_logistic_loss(y, tx, w, lambda_)
     return w, loss
 
-def reg_logistic_regression_SGD(y, tx, initial_w, max_iters, gamma, lambda_):
+def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """Regularized logistic regression using SGD (y in {0,1},
     regularization term lambda*||w||^2)
 
@@ -188,7 +189,7 @@ def reg_logistic_regression_SGD(y, tx, initial_w, max_iters, gamma, lambda_):
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute a stochastic gradient and loss
-            grad, _ = regularized_logistic_gradient(y_batch, tx_batch, w)
+            grad = regularized_logistic_gradient(y_batch, tx_batch, w)
             # update w through the stochastic gradient update
             w = w - gamma * grad    
         """print details

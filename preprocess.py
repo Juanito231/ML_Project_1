@@ -5,6 +5,44 @@ import pickle
 
 # Utility functions
 
+def load_train_data():
+    """load data."""
+    f = open(f"dataset/x_train.csv")
+    features = f.readline()
+    feature_names = features.split(',')
+    data = np.loadtxt(f"dataset/x_train.csv", delimiter=",", skiprows=1, dtype=str)
+    return data,feature_names
+
+def convert_row_to_float(row):
+    """Convert values in row to float or np.nan."""
+    new_row = []
+    for item in row:
+        try:
+            new_row.append(float(item))
+        except ValueError:
+            new_row.append(np.nan)
+    return np.array(new_row)
+
+def convert_all_rows(data):
+    """Convert all rows to float or np.nan."""
+    new_data = []
+    for row in data:
+        new_data.append(convert_row_to_float(row))
+    return np.array(new_data)
+
+def column_NAN(array):
+    nan=0
+    for i in range(len(array)):
+        if np.isnan(array[i]):
+                nan += 1
+    return nan
+
+def number_of_NaNs(list_,data):
+    NaNs=np.zeros(len(list_))
+    for i in list_:
+        NaNs[list_.index(i)]=column_NAN(data[:,list_.index(i)])
+    return NaNs
+
 def train_validation_split(data, ratio, seed):
     """Split data into training and validation set."""
     np.random.seed(seed)
@@ -65,10 +103,10 @@ def clean_outliers(X):
 
 
 def replace_NaN_mean_column(column):
-    # we already standardized the data so the mean is 0
+    mean=np.nanmean(column)
     for i in range(len(column)):
         if np.isnan(column[i]):
-            column[i]= 0
+            column[i]=mean
     return column
 
 def replace_NaN_median_column(column):
@@ -85,4 +123,60 @@ def replace_NaN(matrix, method='mean'):
         elif method=='median':
             matrix[:,i] = replace_NaN_median_column(matrix[:,i])
     return matrix
+
+def create_dictionary_from_correlation(data, features ,correlation_threshold):
+    newfeature_correlation_dict = {}
+    # For each feature in the dataset calculate the correlation with the others and save those which have higher than 0.6 correlation
+    for ft_num, feature in enumerate(features):
+        newfeature_correlation_dict[feature] = []
+        for o_ft_num, other_feature in enumerate(features):
+            if (feature != other_feature):
+                if np.abs(np.corrcoef(data[:,ft_num],data[:,o_ft_num])[0,1]) >= correlation_threshold:
+                    newfeature_correlation_dict[feature].append(other_feature)
+        print(f" Finished for feature: {feature}")
+    return newfeature_correlation_dict
+
+def replace_nine_with_nan(data):
+    for i in range(data.shape[1]):
+        if len(np.unique(data[:,i])) <= 9:
+            for j in range(data.shape[0]):
+                if data[j,i] == 9:
+                    data[j,i] = np.nan
+
+def replace_seven_with_nan(data):
+    for i in range(data.shape[1]):
+        if len(np.unique(data[:,i])) <= 9:
+            if (7 in np.unique(data[:,i])) and (6 not in np.unique(data[:,i])):
+                for j in range(data.shape[0]):
+                    if data[j,i] == 7:
+                        data[j,i] = np.nan
+
+def replace_99_with_nan(data):
+    for i in range(data.shape[1]):
+        if len(np.unique(data[:,i])) <= 50:
+            for j in range(data.shape[0]):
+                if data[j,i] == 99 or data[j,i] == 77:
+                    data[j,i] = np.nan
+                if data[j,i] == 88:
+                    data[j,i] = 0
+
+def clean_outliers_modified(X):
+    for column in range(X.shape[1]):  # for each feature:
+        #For features that have more than 70 unique values
+        if len(np.unique(column)) >= 70:
+        # calculating 25th and 75th quantiles
+            q1_X = np.nanquantile(X[:, column], 0.25, axis=0)
+            q3_X = np.nanquantile(X[:, column], 0.75, axis=0)
+            IQR_X = q3_X - q1_X  # inter quantile range
+            # calculating lower and upper bounds
+            lower_bound = q1_X - 1.5 * IQR_X
+            upper_bound = q3_X + 1.5 * IQR_X
+            # finding which observations are outside/inside of the bounds
+            above = X[:, column] > upper_bound
+            below = X[:, column] < lower_bound
+            outside = above | below
+            # inside = np.invert(outside)
+            #For values that are outside the bounds, replace them with NaN
+            X[outside, column] = np.nan
+    return X
 

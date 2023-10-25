@@ -30,7 +30,7 @@ def convert_all_rows(data):
         new_data.append(convert_row_to_float(row))
     return np.array(new_data)
 
-def column_NAN(array):
+def column_NAN(array): #for this function we can just use np.count_nonzero(np.isnan(array))
     nan=0
     for i in range(len(array)):
         if np.isnan(array[i]):
@@ -47,6 +47,7 @@ def train_validation_split(data, ratio, seed):
     """Split data into training and validation set."""
     np.random.seed(seed)
     np.random.shuffle(data)
+    # warning: if we shuffle our x_train, then we loose the corresponding y_train 
     split_index = int(len(data) * ratio)
     return data[:split_index], data[split_index:]
 

@@ -63,14 +63,14 @@ def standardize_data(data):
     std = np.nanstd(data, axis=0)
     return (data - mean) / std
 
-def removing_features(number_NaN, list_ids, data, threshold=0.1):
-    to_remove=[]
+def removing_features(number_NaN,list_,data):
+    Removed_features=[]
     for i in range(len(number_NaN)):
-        if number_NaN[i] > round(len(data))*threshold:
-            to_remove.append(i)
-    reduced_data = np.delete(data, to_remove, axis = 1)
-    reduced_ids = np.delete(list_ids, to_remove, axis = 0)
-    return reduced_data, reduced_ids
+        if number_NaN[i] > round(len(data))*0.1:
+            Removed_features.append(i)
+    reduced_data = np.delete(data, Removed_features, 1)
+    reduced_list = list(filter(lambda x: list_.index(x) not in Removed_features, list_))
+    return reduced_data, reduced_list
 
 def remove_identic_col(list_ids, x):
     """remove the column that have the same value everywhere to avoid std = 0 after and because not useful"""

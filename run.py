@@ -4,10 +4,16 @@ import matplotlib.pyplot as plt
 from helpers import *
 import seaborn as sns
 from preprocess import *
+from helpers_given import *
 
 # Load data and convert to float
-data, features = load_train_data()
-data = convert_all_rows(data)
+x_train, x_test, y_train, train_ids, test_ids =  load_csv_data('dataset', sub_sample=False)
+with open('dataset/x_train.csv', 'r') as f:
+    features_string = f.readline()
+    features = features_string.split(',')
+features = features[1:]
+data = x_train
+# data = convert_all_rows(x_train)
 NaNs = number_of_NaNs(features,data)
 
 """to have the 3 data files already in float once and for all:

@@ -43,6 +43,12 @@ def number_of_NaNs(list_,data):
         NaNs[list_.index(i)]=column_NAN(data[:,list_.index(i)])
     return NaNs
 
+# faster alternative for number of nans:
+def nb_of_nans(data):
+    nb_nans = np.zeros(data[0].shape)
+    for i, col in enumerate(data.T):
+        nb_nans[i] = np.count_nonzero(np.isnan(col))
+
 def train_validation_split(data, ratio, seed):
     """Split data into training and validation set."""
     np.random.seed(seed)
@@ -70,10 +76,10 @@ def removing_features(number_NaN,list_,data):
             Removed_features.append(i)
     reduced_data = np.delete(data, Removed_features, 1)
     reduced_list = list(filter(lambda x: list_.index(x) not in Removed_features, list_))
-    return reduced_data, reduced_list
+    return reduced_data, reduced_list, Removed_features
 
 def remove_identic_col(list_ids, x):
-    """remove the column that have the same value everywhere to avoid std = 0 after and because not useful"""
+    """remove the column that have the same value everywhere to avoid std = 0 (also those columns are not useful)"""
     to_remove=[]
     for i, col in enumerate(x.T):
         if len(np.unique(col))==1:

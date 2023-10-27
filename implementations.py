@@ -100,11 +100,16 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):#checked
         gamma: a scalar denoting the stepsize
     """
     w = initial_w
+    previous_loss = 0
     for n_iter in range(max_iters):
         # compute gradient
         grad = compute_gradient_logistic(y, tx, w)
+        loss = compute_loss_logistic(y, tx, w)
         # update w by gradient descent
         w = w - gamma * grad
+        if (np.abs(loss - previous_loss) < 1e-8) and (n_iter > 1):
+            break
+        previous_loss = loss
         """#if want details of the convergence
         loss = compute_loss_logistic(y, tx , w)
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(

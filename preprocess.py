@@ -48,6 +48,7 @@ def nb_of_nans(data):
     nb_nans = np.zeros(data[0].shape)
     for i, col in enumerate(data.T):
         nb_nans[i] = np.count_nonzero(np.isnan(col))
+    return nb_nans
 
 def train_validation_split(data, ratio, seed):
     """Split data into training and validation set."""

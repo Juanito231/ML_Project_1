@@ -89,3 +89,75 @@ def convert_minus1_to_0(y):
 
 def convert_0_to_minus1(y):
     return 2*y - 1
+
+def convert_to_0_1(array_y):
+    #If the value is greater than 0.5, we round it to 1, otherwise we round it to 0
+    return map(array_y, lambda x: 1 if x >= 0.5 else 0)
+
+def compute_accuracy(y, y_pred):
+    """Computes the accuracy of the prediction.
+
+    Args:
+        y: shape=(N, ). The true labels.
+        y_pred: shape=(N, ). The predicted labels.
+
+    Returns:
+        A scalar between 0 and 1, representing the fraction of correct predictions.
+    """
+    return np.mean(y == y_pred)
+
+def compute_accuracy_logistic(y, tx, w):
+    """Computes the accuracy of the prediction.
+
+    Args:
+        y: shape=(N, ). The true labels.
+        tx: shape=(N,D)
+        w: shape=(D, ). The vector of model parameters.
+
+    Returns:
+        A scalar between 0 and 1, representing the fraction of correct predictions.
+    """
+    y_pred = convert_predict(tx @ w)
+    return compute_accuracy(y, y_pred)
+
+def compute_precision(y, y_pred):
+    """Computes the precision of the prediction.
+
+    Args:
+        y: shape=(N, ). The true labels.
+        y_pred: shape=(N, ). The predicted labels.
+
+    Returns:
+        A scalar between 0 and 1, representing the fraction of correct predictions.
+    """
+    true_positives = np.sum(np.logical_and(y == 1, y_pred == 1))
+    false_positives = np.sum(np.logical_and(y == 0, y_pred == 1))
+    return true_positives / (true_positives + false_positives)
+
+def compute_recall(y, y_pred):
+    """Computes the recall of the prediction.
+
+    Args:
+        y: shape=(N, ). The true labels.
+        y_pred: shape=(N, ). The predicted labels.
+
+    Returns:
+        A scalar between 0 and 1, representing the fraction of correct predictions.
+    """
+    true_positives = np.sum(np.logical_and(y == 1, y_pred == 1))
+    false_negatives = np.sum(np.logical_and(y == 1, y_pred == 0))
+    return true_positives / (true_positives + false_negatives)
+
+def compute_f1(y, y_pred):
+    """Computes the f1 score of the prediction.
+
+    Args:
+        y: shape=(N, ). The true labels.
+        y_pred: shape=(N, ). The predicted labels.
+
+    Returns:
+        A scalar between 0 and 1, representing the fraction of correct predictions.
+    """
+    precision = compute_precision(y, y_pred)
+    recall = compute_recall(y, y_pred)
+    return 2 * precision * recall / (precision + recall)

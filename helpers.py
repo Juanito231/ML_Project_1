@@ -130,9 +130,12 @@ def compute_precision(y, y_pred):
     Returns:
         A scalar between 0 and 1, representing the fraction of correct predictions.
     """
-    true_positives = np.sum(np.logical_and(y == 1, y_pred == 1))
-    false_positives = np.sum(np.logical_and(y == 0, y_pred == 1))
-    return true_positives / (true_positives + false_positives)
+    true_positives = np.nansum(np.logical_and(y == 1, y_pred == 1))
+    false_positives = np.nansum(np.logical_and(y == 0, y_pred == 1))
+    if (true_positives + false_positives) == 0:
+        return 0.0
+    else:
+        return true_positives / (true_positives + false_positives)
 
 def compute_recall(y, y_pred):
     """Computes the recall of the prediction.
@@ -146,7 +149,10 @@ def compute_recall(y, y_pred):
     """
     true_positives = np.sum(np.logical_and(y == 1, y_pred == 1))
     false_negatives = np.sum(np.logical_and(y == 1, y_pred == 0))
-    return true_positives / (true_positives + false_negatives)
+    if (true_positives + false_negatives) == 0:
+        return 0.0
+    else:
+        return true_positives / (true_positives + false_negatives)
 
 def compute_f1(y, y_pred):
     """Computes the f1 score of the prediction.
@@ -160,4 +166,7 @@ def compute_f1(y, y_pred):
     """
     precision = compute_precision(y, y_pred)
     recall = compute_recall(y, y_pred)
-    return 2 * precision * recall / (precision + recall)
+    if (precision + recall) == 0:
+        return 0.0
+    else:
+        return 2 * precision * recall / (precision + recall)

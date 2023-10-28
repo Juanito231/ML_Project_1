@@ -14,6 +14,9 @@ def convert_predict(y):
     """ convert prediction to 0 and 1 with sigmoid"""
     return np.round(sigmoid_function(y))
 
+def prediction(tx, w):
+    return convert_predict(tx@w)
+
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
     Generate a minibatch iterator for a dataset.

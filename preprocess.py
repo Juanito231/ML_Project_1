@@ -132,6 +132,15 @@ def replace_NaN(matrix, method='mean'):
             matrix[:,i] = replace_NaN_median_column(matrix[:,i])
     return matrix
 
+# faster alternative to replace the nans
+def replace_nans(data, method='mean'):
+    for i in range(data.shape[1]):
+        if method=='mean':
+            np.nan_to_num(data[:,i], np.nanmean([data[:,i]]))
+        elif method=='median':
+            np.nan_to_num(data[:,i], np.nanmedian([data[:,i]]))
+    return data
+
 def create_dictionary_from_correlation(data, features ,correlation_threshold):
     newfeature_correlation_dict = {}
     # For each feature in the dataset calculate the correlation with the others and save those which have higher than 0.6 correlation

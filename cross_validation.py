@@ -37,6 +37,12 @@ def cross_validation(y, x,initial_w, max_iters, gamma, k_indices, k, lambda_, de
     # calculate the F1-score for both training and test data
     pred_y_tr = convert_predict(tx_tr @ w)
     pred_y_te = convert_predict(tx_te @ w)
-    F1_tr = compute_f1(y_tr,pred_y_tr)
-    F1_te = compute_f1(y_te,pred_y_te)
+    if isNaN(compute_f1(y_tr,pred_y_tr)):
+        F1_tr = 0.0
+    else:
+        F1_tr = compute_f1(y_tr,pred_y_tr)
+    if isNaN(compute_f1(y_te,pred_y_te)):
+        F1_te = 0.0
+    else:
+        F1_te = compute_f1(y_te,pred_y_te)
     return F1_tr, F1_te

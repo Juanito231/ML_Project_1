@@ -35,8 +35,8 @@ def cross_validation(y, x,initial_w, max_iters, gamma, k_indices, k, lambda_, de
     # penalized logistic regression
     w, loss_tr = reg_logistic_regression(y_tr, tx_tr, lambda_,w0, max_iters, gamma)
     # calculate the F1-score for both training and test data
-    pred_y_tr = tx_tr @ w
-    pred_y_te = tx_te @ w
+    pred_y_tr = convert_predict(tx_tr @ w)
+    pred_y_te = convert_predict(tx_te @ w)
     F1_tr = compute_f1(y_tr,pred_y_tr)
     F1_te = compute_f1(y_te,pred_y_te)
     return F1_tr, F1_te

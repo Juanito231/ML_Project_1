@@ -109,13 +109,13 @@ def replace_NaN_median_column(column):
             column[i]=median
     return column
 
-def replace_nans(data, method='mean'):
-    for i in range(data.shape[1]):
+def replace_NaN(matrix, method='mean'): 
+    for i in range(matrix.shape[1]):
         if method=='mean':
-            np.nan_to_num(data[:,i], np.nanmean([data[:,i]]))
+            matrix[:,i] = replace_NaN_mean_column(matrix[:,i])
         elif method=='median':
-            np.nan_to_num(data[:,i], np.nanmedian([data[:,i]]))
-    return data
+            matrix[:,i] = replace_NaN_median_column(matrix[:,i])
+    return matrix
 
 def create_dictionary_from_correlation(data, features ,correlation_threshold):
     newfeature_correlation_dict = {}

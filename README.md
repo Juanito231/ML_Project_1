@@ -29,10 +29,13 @@ Estelle Baup (estelle.baup@epfl.ch)
 # How to get started
 1. Clone this repo (for help, see this [tutorial](https://help.github.com/articles/cloning-a-repository/)).
 2. The raw data is available [here](https://www.aicrowd.com/challenges/epfl-machine-learning-project-1/dataset_files). Download the data in csv format and store it in a folder named "dataset".
-3. Make sure to have all the libraries installed. TODO: include a list of all libraries needed
+3. Make sure to have all the libraries in the requirements.txt [file](requirements.txt) installed. If not, run the following command in your terminal:
+```
+pip install -r requirements.txt
+```
 
 # Reproduce our best model
-To reproduce our best result on AIcrowd (accuracy=0.868, F1 score=0.394), change the path name in the file `run.py` (it is indicated where to change it) to where your dataset folder is located. Then write the follwoing command in your terminal:
+To reproduce our best result on AIcrowd (accuracy=0.864, F1 score=0.398), change the path name in the file `run.py` to where your dataset folder is located (it is indicated clearly where to change it). Then write the following command in your terminal:
 ```
 python run.py
 ```

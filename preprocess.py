@@ -197,3 +197,30 @@ def clean_outliers_modified(X):
             X[outside, column] = np.nan
     return X
 
+def nan_corrcoef(data):
+    """
+    Calculate the correlation matrix between features, ignoring NaN values.
+
+    Parameters:
+    data (numpy.ndarray): The input data matrix.
+
+    Returns:
+    numpy.ndarray: The correlation matrix with NaN values appropriately handled.
+    """
+    num_features = data.shape[1]
+    corr_matrix = np.empty((num_features, num_features), dtype=float)
+    
+    for i in range(num_features):
+        for j in range(num_features):
+            # Find indices where both columns have non-NaN values
+            valid_indices = ~np.isnan(data[:, i]) & ~np.isnan(data[:, j])
+            
+            # Calculate the correlation for valid values
+            if np.any(valid_indices):
+                corr_matrix[i, j] = np.corrcoef(data[valid_indices, i], data[valid_indices, j])[0, 1]
+            else:
+                # If no valid values, set the correlation to NaN
+                corr_matrix[i, j] = np.nan
+
+    return corr_matrix
+

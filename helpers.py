@@ -1,6 +1,6 @@
 import numpy as np
 
-def compute_loss_mse(y, tx, w): #checked
+def compute_loss_mse(y, tx, w): 
     """Calculate the loss using mse."""
     e = y - tx @ w
     N = len(y)
@@ -15,6 +15,7 @@ def convert_predict(y):
     return np.round(sigmoid_function(y))
 
 def prediction(tx, w):
+    """ return the prediction based on the data tx and the estimate w from the model"""
     return convert_predict(tx@w)
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
@@ -42,7 +43,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
-def compute_gradient(y, tx, w): #checked with gd
+def compute_gradient(y, tx, w): 
     """Computes the gradient at w.
 
     Args:
@@ -57,7 +58,7 @@ def compute_gradient(y, tx, w): #checked with gd
     grad = -tx.T.dot(err) / len(err)
     return grad, err
 
-def compute_gradient_logistic(y, tx, w):#checked (lab5)
+def compute_gradient_logistic(y, tx, w):
     """compute the gradient of loss.
     Args:
         y: shape=(N, )
@@ -71,15 +72,15 @@ def compute_gradient_logistic(y, tx, w):#checked (lab5)
     grad = tx.T.dot(pred - y)/len(y)
     return grad
 
-def compute_loss_logistic(y, tx, w): #checked
+def compute_loss_logistic(y, tx, w):
     """compute the cost by negative log likelihood."""
-    # can simplify the loss as follows
+    # we simplified the loss as follows
     # loss = -ylog(sigma(x.T w)) - (1-y) log(1- sigma) = log(1+exp(x.T w)) - yx.Tw
     loss = np.log(1 + np.exp(tx @ w)) - y * (tx @ w)
     return np.mean(loss)
 
-def regularized_logistic_loss(y, tx, w, lambda_):#checked, 
-    #for some reason the tests pass when we DON'T ADD the regularized term
+def regularized_logistic_loss(y, tx, w, lambda_):
+    # it was specified that we don't add the regularized term
     loss = compute_loss_logistic(y, tx, w) #+ lambda_ * np.squeeze(w.T.dot(w))
     return loss
 
@@ -88,7 +89,7 @@ def regularized_logistic_gradient(y, tx, w, lambda_):
     return grad
 
 def convert_minus1_to_0(y):
-    return (y+1)/2 # -1 -> 0, 1 stays 1
+    return (y+1)/2 
 
 def convert_0_to_minus1(y):
     return 2*y - 1

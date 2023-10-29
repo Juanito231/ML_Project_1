@@ -32,8 +32,8 @@ Estelle Baup (estelle.baup@epfl.ch)
 3. Make sure to have all the libraries installed. TODO: include a list of all libraries needed
 
 # Reproduce our best model
-To reproduce our best result on AIcrowd (accuracy=0.872, F1 score=0.393), change the path name in the file `run.py` (it is indicated where to change it) to where your dataset folder is located. Then write the follwoing command in your terminal:
+To reproduce our best result on AIcrowd (accuracy=0.868, F1 score=0.394), change the path name in the file `run.py` (it is indicated where to change it) to where your dataset folder is located. Then write the follwoing command in your terminal:
 ```
 python run.py
 ```
-The results will be saved as a csv file named `name.csv` TODO.
+The results will be saved as a csv file named `best_result.csv`.TODO:change name in notebook

@@ -39,4 +39,10 @@ To reproduce our best result on AIcrowd (accuracy=0.864, F1 score=0.398), change
 ```
 python run.py
 ```
+The code could take a few minutes to run, and should output the loading process of the dataset as such:
+```
+y_train loaded
+x_train loaded
+y_test loaded
+```
 The results will be saved as a csv file named `best_result.csv`.TODO:change name in notebook

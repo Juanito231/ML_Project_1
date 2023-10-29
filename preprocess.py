@@ -30,20 +30,6 @@ def convert_all_rows(data):
         new_data.append(convert_row_to_float(row))
     return np.array(new_data)
 
-def column_NAN(array): #for this function we can just use np.count_nonzero(np.isnan(array))
-    nan=0
-    for i in range(len(array)):
-        if np.isnan(array[i]):
-                nan += 1
-    return nan
-
-def number_of_NaNs(list_,data):
-    NaNs=np.zeros(len(list_))
-    for i in list_:
-        NaNs[list_.index(i)]=column_NAN(data[:,list_.index(i)])
-    return NaNs
-
-# faster alternative for number of nans:
 def nb_of_nans(data):
     nb_nans = np.zeros(data[0].shape)
     for i, col in enumerate(data.T):
@@ -109,7 +95,6 @@ def clean_outliers(X):
         X[outside, column] = median
     return X
 
-
 def replace_NaN_mean_column(column):
     mean=np.nanmean(column)
     for i in range(len(column)):
@@ -124,15 +109,6 @@ def replace_NaN_median_column(column):
             column[i]=median
     return column
 
-def replace_NaN(matrix, method='mean'): 
-    for i in range(matrix.shape[1]):
-        if method=='mean':
-            matrix[:,i] = replace_NaN_mean_column(matrix[:,i])
-        elif method=='median':
-            matrix[:,i] = replace_NaN_median_column(matrix[:,i])
-    return matrix
-
-# faster alternative to replace the nans
 def replace_nans(data, method='mean'):
     for i in range(data.shape[1]):
         if method=='mean':
@@ -223,4 +199,3 @@ def nan_corrcoef(data):
                 corr_matrix[i, j] = np.nan
 
     return corr_matrix
-

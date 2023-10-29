@@ -70,10 +70,10 @@ def standardize_data(data):
     std = np.nanstd(data, axis=0)
     return (data - mean) / std
 
-def removing_features(number_NaN,list_,data):
+def removing_features(number_NaN,list_,data, threshold):
     Removed_features=[]
     for i in range(len(number_NaN)):
-        if number_NaN[i] > round(len(data))*0.1:
+        if number_NaN[i] > round(len(data))*threshold:
             Removed_features.append(i)
     reduced_data = np.delete(data, Removed_features, 1)
     reduced_list = list(filter(lambda x: list_.index(x) not in Removed_features, list_))

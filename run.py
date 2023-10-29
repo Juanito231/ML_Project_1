@@ -47,8 +47,8 @@ reduced_x_train = clean_outliers_modified(reduced_x_train)
 reduced_x_test = clean_outliers_modified(reduced_x_test)
 
 # Replace NaNs with medians
-reduced_median = replace_NaN(reduced_x_train, method='median')
-reduced_test_median = replace_NaN(reduced_x_test, method = 'median')
+reduced_median = replace_nans(reduced_x_train, method='median')
+reduced_test_median = replace_nans(reduced_x_test, method = 'median')
 
 # Standardize the data
 standardized_x_train = standardize_data(reduced_median)

@@ -1,3 +1,4 @@
+"""Utility functions for implementations and prediction."""
 import numpy as np
 
 def compute_loss_mse(y, tx, w): 
@@ -16,7 +17,7 @@ def convert_predict(y):
 
 def prediction(tx, w):
     """ return the prediction based on the data tx and the estimate w from the model"""
-    return convert_predict(tx@w)
+    return convert_predict(tx @ w)
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -59,7 +60,7 @@ def compute_gradient(y, tx, w):
     return grad, err
 
 def compute_gradient_logistic(y, tx, w):
-    """compute the gradient of loss.
+    """Computes the gradient of loss at w for logistic regression.
     Args:
         y: shape=(N, )
         tx: shape=(N,D)
@@ -73,25 +74,37 @@ def compute_gradient_logistic(y, tx, w):
     return grad
 
 def compute_loss_logistic(y, tx, w):
-    """compute the cost by negative log likelihood."""
+    """Computes the cost by negative log likelihood."""
     # we simplified the loss as follows
     # loss = -ylog(sigma(x.T w)) - (1-y) log(1- sigma) = log(1+exp(x.T w)) - yx.Tw
     loss = np.log(1 + np.exp(tx @ w)) - y * (tx @ w)
     return np.mean(loss)
 
 def regularized_logistic_loss(y, tx, w, lambda_):
-    # it was specified that we don't add the regularized term
-    loss = compute_loss_logistic(y, tx, w) #+ lambda_ * np.squeeze(w.T.dot(w))
+    """Computes the cost by negative log likelihood."""
+    # it was specified that we don't add the regularized term (+lambda_ * np.squeeze(w.T.dot(w)))
+    loss = compute_loss_logistic(y, tx, w) 
     return loss
 
 def regularized_logistic_gradient(y, tx, w, lambda_):
+    """Computes the gradient of loss at w for regularized logistic regression.
+    Args:
+        y: shape=(N, )
+        tx: shape=(N,D)
+        w: shape=(D, ). The vector of model parameters.
+
+    Returns:
+        An array of shape (D, ) (same shape as w), containing the gradient of the loss at w.
+    """
     grad = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
     return grad
 
 def convert_minus1_to_0(y):
+    """Converts the -1s to 0s in a prediction."""
     return (y+1)/2 
 
 def convert_0_to_minus1(y):
+    """Converts the 0s to -1s in a prediction."""
     return 2*y - 1
 
 def convert_to_0_1(array_y):
@@ -111,7 +124,7 @@ def compute_accuracy(y, y_pred):
     return np.mean(y == y_pred)
 
 def compute_accuracy_logistic(y, tx, w):
-    """Computes the accuracy of the prediction.
+    """Computes the accuracy of the prediction with logistic regression.
 
     Args:
         y: shape=(N, ). The true labels.
@@ -132,7 +145,7 @@ def compute_precision(y, y_pred):
         y_pred: shape=(N, ). The predicted labels.
 
     Returns:
-        A scalar between 0 and 1, representing the fraction of correct predictions.
+        A scalar between 0 and 1, representing the fraction of correct predictions among the positive predictions.
     """
     true_positives = np.nansum(np.logical_and(y == 1, y_pred == 1))
     false_positives = np.nansum(np.logical_and(y == 0, y_pred == 1))
@@ -149,7 +162,7 @@ def compute_recall(y, y_pred):
         y_pred: shape=(N, ). The predicted labels.
 
     Returns:
-        A scalar between 0 and 1, representing the fraction of correct predictions.
+        A scalar between 0 and 1, representing the recall.
     """
     true_positives = np.sum(np.logical_and(y == 1, y_pred == 1))
     false_negatives = np.sum(np.logical_and(y == 1, y_pred == 0))
@@ -166,7 +179,7 @@ def compute_f1(y, y_pred):
         y_pred: shape=(N, ). The predicted labels.
 
     Returns:
-        A scalar between 0 and 1, representing the fraction of correct predictions.
+        A scalar between 0 and 1, representing the F1 score.
     """
     precision = compute_precision(y, y_pred)
     recall = compute_recall(y, y_pred)

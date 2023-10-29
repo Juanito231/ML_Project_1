@@ -16,7 +16,7 @@ Estelle Baup (estelle.baup@epfl.ch)
 * `helpers.py`: utility functions useful for the 6 mandatory methods and the prediction
 * `preprocess.py`: utility functions useful for the pre-processing of the data
 * `cross_validation.py`: utility functions useful for performing cross-validation
-* `first_run.ipynb`:(TODO: change name) detailed notebook about the different steps we took, and how we obtained our graphs and tables in the report
+* `Explanation_Notebook.ipynb`: detailed notebook of the different steps we took, and how we obtained our graphs and tables in the report
 
 # Methods used
 - Mean Squared Error with Gradient Descent
@@ -39,10 +39,10 @@ To reproduce our best result on AIcrowd (accuracy=0.864, F1 score=0.398), change
 ```
 python run.py
 ```
-The code could take a few minutes to run, and should output the loading process of the dataset as such:
+The code should take a few minutes to run, and should output the loading process of the dataset as such:
 ```
 y_train loaded
 x_train loaded
 y_test loaded
 ```
-The results will be saved as a csv file named `best_result.csv`.TODO:change name in notebook
+The results will be saved as a csv file named `best_result.csv`.

@@ -1,3 +1,5 @@
+"""Utility functions for performing cross-validation."""
+
 import numpy as np
 from helpers import *
 from implementations import reg_logistic_regression

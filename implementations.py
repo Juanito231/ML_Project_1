@@ -1,4 +1,4 @@
-# Implementations of the 6 ML methods
+"""Implementations of the 6 ML methods."""
 from helpers import*
 import numpy as np
 
@@ -42,6 +42,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
+    # initialize w
     w = initial_w
     for n_iter in range(max_iters):
         # we use a batch_size of 1 (as stated in the project description)
@@ -66,7 +67,7 @@ def least_squares(y, tx):
         y: numpy array of shape (N,)
         tx: numpy array of shape=(N,D)
     """
-    #solve linear system with np.linalg.solve
+    # solve linear system for least squares
     A = tx.T.dot(tx)
     b = tx.T.dot(y)
     w = np.linalg.solve(A, b)
@@ -82,6 +83,7 @@ def ridge_regression(y, tx, lambda_):
         tx: numpy array of shape=(N,D)
         lambda_: regularization parameter
     """
+    # solve the linear system for ridge regression
     aI = 2 * tx.shape[0] * lambda_ * np.identity(tx.shape[1])
     A = tx.T.dot(tx) + aI
     b = tx.T.dot(y)
@@ -90,7 +92,7 @@ def ridge_regression(y, tx, lambda_):
     return w, loss
 
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):#checked
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """Logistic regression using GD (y in {0,1})
 
     Args:
@@ -100,6 +102,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):#checked
         max_iters: scalar denoting the total number of iterations of GD
         gamma: a scalar denoting the stepsize
     """
+    # initialize w
     w = initial_w
     previous_loss = 0
     for n_iter in range(max_iters):
@@ -134,6 +137,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma ):#check
         gamma: a scalar denoting the stepsize
         lambda_: regularization parameter
     """
+    # initialize w
     w = initial_w
     for n_iter in range(max_iters):
         # compute gradient

@@ -15,6 +15,13 @@ with open('dataset/x_train.csv', 'r') as f:
     features = features_string.split(',')
 features = features[1:]
 data = x_train
+# Features to keep:
+feature_indeces = [26, 27, 28, 30, 31, 32, 33, 34, 36, 37, 38, 39, 40, 42, 43, 44, 45, 46,
+                   47, 48, 50, 51, 52, 53, 57, 58, 59, 60, 61, 65, 66, 67, 68, 69, 70, 71,
+                   72, 76, 87, 99, 100, 103, 104, 216, 217, 219, 220, 221, 222, 227, 229, 
+                   230, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 244, 245, 247,
+                   248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 264, 266, 267,
+                   268, 269, 270, 271, 276, 277, 280, 281, 287, 288, 297, 313, 314, 315, 320]
 # data = convert_all_rows(x_train)
 # NaNs = number_of_NaNs(features,data)
 # faster alternative for number of nans:
